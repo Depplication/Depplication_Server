@@ -1,4 +1,4 @@
-package com.project.Dion.domain.user.entity;
+package com.project.Dion.domain.owner.entity;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -13,7 +13,7 @@ public class Owner {
     @Id
     private String id;
 
-    @Column(nullable = false, name = "password", length = 20)
+    @Column(nullable = false, name = "password", length = 100)
     private String pw;
 
     @Column(name = "ownerName", length = 10)
@@ -28,17 +28,13 @@ public class Owner {
     @Column(nullable = false, name = "address")
     private String address;
 
-    @Column(nullable = false, name = "businessNumber")
-    private String business;
-
     @Builder
-    public Owner(String id, String pw, String name, String phone, String store, String address, String business) {
+    public Owner(String id, String pw, String name, String phone, String store, String address) {
         this.id = id;
         this.pw = pw;
         this.name = name;
         this.phone = phone;
         this.store = store;
         this.address = address;
-        this.business = business;
     }
 }
