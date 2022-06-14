@@ -1,13 +1,13 @@
 package com.project.Dion.domain.owner.entity;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity(name = "dion_owners")
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString
 public class Owner {
 
     @Id
