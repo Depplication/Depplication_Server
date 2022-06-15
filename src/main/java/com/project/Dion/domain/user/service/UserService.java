@@ -1,9 +1,8 @@
 package com.project.Dion.domain.user.service;
 
-import com.project.Dion.domain.user.dto.request.UserDeleteRequestDto;
-import com.project.Dion.domain.user.dto.request.UserJoinRequestDto;
-import com.project.Dion.domain.user.dto.request.UserLoginRequestDto;
+import com.project.Dion.domain.user.dto.request.*;
 import com.project.Dion.domain.user.entity.User;
+
 
 public interface UserService {
 
@@ -11,11 +10,11 @@ public interface UserService {
 
     User userLogin(UserLoginRequestDto userLoginRequestDto);
 
-    User userUpdate(UserDeleteRequestDto userDeleteRequestDto);
+    User userUpdate(UserUpdateRequestDto userUpdateRequestDto);
 
-    User userInfo();
+    User userInfo(UserInfoRequestDto userInfoRequestDto);
 
-    void userDelete();
+    void userDelete(UserDeleteRequestDto userDeleteRequestDto);
 
 
 }
