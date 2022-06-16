@@ -11,14 +11,10 @@ import lombok.NoArgsConstructor;
 public class UserDeleteRequestDto {
 
     @NotNull
-    private String token;
-
-    @NotNull
     private String pw;
 
     @Builder
-    public UserDeleteRequestDto(String token, String pw) {
-        this.token = token;
+    public UserDeleteRequestDto(String pw) {
         this.pw = pw;
     }
 }

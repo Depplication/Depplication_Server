@@ -1,10 +1,13 @@
 package com.project.Dion.domain.owner.service;
 
+import com.project.Dion.domain.owner.dto.request.OwnerInfoRequestDto;
 import com.project.Dion.domain.owner.dto.request.OwnerJoinRequestDto;
 import com.project.Dion.domain.owner.dto.request.OwnerLoginRequestDto;
 import com.project.Dion.domain.owner.entity.Owner;
 import com.project.Dion.domain.owner.exception.OwnerAlreadyExistsException;
+import com.project.Dion.domain.owner.exception.OwnerNotFoundException;
 import com.project.Dion.domain.owner.repository.OwnerRepository;
+import com.project.Dion.global.exception.PasswordWrongException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,7 +21,18 @@ public class OwnerServiceImpl implements OwnerService {
 
     @Override
     public Owner ownerLogin(OwnerLoginRequestDto ownerLoginRequestDto) {
-        return null;
+
+        if(!ownerRepository.existsById(ownerLoginRequestDto.getId())) {
+            throw OwnerNotFoundException.EXCEPTION;
+        }
+
+        Owner owner = ownerRepository.getById(ownerLoginRequestDto.getId());
+        if(!passwordEncoder.matches(ownerLoginRequestDto.getPw(), owner.getPw())) {
+            throw PasswordWrongException.EXCEPTION;
+        }
+
+        return owner;
+
     }
 
     @Override
@@ -41,7 +55,14 @@ public class OwnerServiceImpl implements OwnerService {
     }
 
     @Override
-    public Owner ownerInfo() {
-        return null;
+    public Owner ownerInfo(OwnerInfoRequestDto ownerInfoRequestDto) {
+
+        if(!ownerRepository.existsById(ownerInfoRequestDto.getId())) {
+            throw OwnerNotFoundException.EXCEPTION;
+        }
+
+        Owner ownerInfo = ownerRepository.getById(ownerInfoRequestDto.getId());
+
+        return ownerInfo;
     }
 }

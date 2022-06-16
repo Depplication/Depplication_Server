@@ -1,6 +1,5 @@
 package com.project.Dion.domain.user.dto.response;
 
-import com.project.Dion.domain.user.entity.User;
 import com.project.Dion.global.response.HttpResponse;
 import com.project.Dion.global.token.dto.TokenDataResponse;
 import com.project.Dion.global.token.dto.TokenResponse;

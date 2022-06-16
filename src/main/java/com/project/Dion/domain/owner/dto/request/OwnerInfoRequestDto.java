@@ -13,9 +13,13 @@ public class OwnerInfoRequestDto {
     @NotNull
     private String id;
 
+    @NotNull
+    private String token;
+
     @Builder
-    public OwnerInfoRequestDto(String id) {
+    public OwnerInfoRequestDto(String id, String token) {
         this.id = id;
+        this.token = token;
     }
 
 }

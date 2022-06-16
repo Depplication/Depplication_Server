@@ -1,5 +1,6 @@
 package com.project.Dion.domain.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
 
     @Id
@@ -25,13 +27,17 @@ public class User {
     @Column(name = "accountNumber", length = 50)
     private String account;
 
+    @Column(name = "address")
+    private String address;
+
     @Builder
-    public User(String id, String pw, String name, String phone, String account) {
+    public User(String id, String pw, String name, String phone, String account, String address) {
         this.id = id;
         this.pw = pw;
         this.name = name;
         this.phone = phone;
         this.account = account;
+        this.address = address;
     }
 
 }

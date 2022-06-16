@@ -10,11 +10,11 @@ public interface UserService {
 
     User userLogin(UserLoginRequestDto userLoginRequestDto);
 
-    User userUpdate(UserUpdateRequestDto userUpdateRequestDto);
+    User userUpdate(String token, UserUpdateRequestDto userUpdateRequestDto);
 
-    User userInfo(UserInfoRequestDto userInfoRequestDto);
+    User userInfo(String token);
 
-    void userDelete(UserDeleteRequestDto userDeleteRequestDto);
+    void userDelete(String token, UserDeleteRequestDto userDeleteRequestDto);
 
 
 }
