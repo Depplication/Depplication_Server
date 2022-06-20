@@ -1,10 +1,12 @@
 package com.project.Dion.global.token.service;
 
+import com.project.Dion.global.exception.TokenAuthenticationFailureException;
 import com.project.Dion.global.token.component.JwtProvider;
 import com.project.Dion.global.token.dto.TokenDataResponse;
 import com.project.Dion.global.token.dto.TokenResponse;
 import com.project.Dion.global.token.dto.TokenResponseNoData;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +34,7 @@ public class TokenService {
     /**
      * Token 인증
      * */
-    public TokenResponseNoData checkToken(String token) {
+    public TokenResponseNoData checkToken(String token) throws TokenAuthenticationFailureException, ExpiredJwtException {
         Claims claims = jwtProvider.parseJwtToken(token);
 
         return new TokenResponseNoData("200", "success");
