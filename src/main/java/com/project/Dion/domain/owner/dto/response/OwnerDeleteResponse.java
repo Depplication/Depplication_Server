@@ -5,12 +5,9 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @Getter
-public class OwnerInfoResponse<T> extends HttpResponse {
+public class OwnerDeleteResponse extends HttpResponse {
 
-    private T data;
-
-    public OwnerInfoResponse(HttpStatus status, String msg, T data) {
+    public OwnerDeleteResponse(HttpStatus status, String msg) {
         super(status, msg);
-        this.data = data;
     }
 }
