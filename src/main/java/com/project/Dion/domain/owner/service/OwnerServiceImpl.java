@@ -35,7 +35,7 @@ public class OwnerServiceImpl implements OwnerService {
             throw OwnerNotFoundException.EXCEPTION;
         }
 
-        Owner owner = ownerRepository.getById(ownerLoginRequestDto.getId());
+        Owner owner = ownerRepository.getReferenceById(ownerLoginRequestDto.getId());
         if(!passwordEncoder.matches(ownerLoginRequestDto.getPw(), owner.getPw())) {
             throw PasswordWrongException.EXCEPTION;
         }
@@ -74,9 +74,7 @@ public class OwnerServiceImpl implements OwnerService {
             throw OwnerNotFoundException.EXCEPTION;
         }
 
-        Owner ownerInfo = ownerRepository.getReferenceById(claims.getSubject());
-
-        return ownerInfo;
+        return ownerRepository.getReferenceById(claims.getSubject());
     }
 
     @Override
