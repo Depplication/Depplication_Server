@@ -34,27 +34,27 @@ public class UserController {
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public UserUpdateResponse<User> userUpdate(
-            @RequestHeader String authorization,
+            @RequestHeader(value = "Authorization") String token,
             @RequestBody UserUpdateRequestDto dto
     ) {
-        return new UserUpdateResponse<User>(HttpStatus.OK, "업데이트 성공", service.userUpdate(authorization, dto));
+        return new UserUpdateResponse<User>(HttpStatus.OK, "업데이트 성공", service.userUpdate(token, dto));
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public UserDeleteResponse userDelete(
-            @RequestHeader String authorization,
+            @RequestHeader(value = "Authorization") String token,
             @RequestBody UserDeleteRequestDto dto
     ) {
-        service.userDelete(authorization, dto);
+        service.userDelete(token, dto);
 
         return new UserDeleteResponse(HttpStatus.OK, "삭제 성공");
     }
 
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     public UserInfoResponse<User> userInfo(
-            @RequestHeader String authorization
+            @RequestHeader(value = "Authorization") String token
     ) {
-        return new UserInfoResponse<User>(HttpStatus.OK, "유저 정보 불러오기 성공", service.userInfo(authorization));
+        return new UserInfoResponse<User>(HttpStatus.OK, "유저 정보 불러오기 성공", service.userInfo(token));
     }
 
 }

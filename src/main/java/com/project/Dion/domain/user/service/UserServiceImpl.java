@@ -6,7 +6,6 @@ import com.project.Dion.global.exception.PasswordWrongException;
 import com.project.Dion.domain.user.exception.UserAlreadyExistsException;
 import com.project.Dion.domain.user.exception.UserNotFoundException;
 import com.project.Dion.domain.user.repository.UserRepository;
-import com.project.Dion.global.exception.TokenAuthenticationFailureException;
 import com.project.Dion.global.token.component.JwtProvider;
 import com.project.Dion.global.token.service.TokenService;
 import com.project.Dion.global.utils.UpdateUtil;
@@ -64,6 +63,8 @@ public class UserServiceImpl implements UserService{
     @Override
     public User userUpdate(String token, UserUpdateRequestDto userUpdateRequestDto) {
 
+        tService.checkToken(token);
+
         Claims claims = jwtProvider.parseJwtToken(token);
 
         if(!userRepository.existsById(claims.getSubject())) {
@@ -94,6 +95,8 @@ public class UserServiceImpl implements UserService{
     @Override
     public User userInfo(String token) {
 
+        tService.checkToken(token);
+
         Claims claims = jwtProvider.parseJwtToken(token);
 
         if(!userRepository.existsById(claims.getSubject())) {
@@ -106,9 +109,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public void userDelete(String token, UserDeleteRequestDto userDeleteRequestDto) {
 
-        if(!tService.checkToken(token).getMsg().equals("success")) {
-            throw TokenAuthenticationFailureException.EXCEPTION;
-        }
+        tService.checkToken(token);
 
         Claims claims = jwtProvider.parseJwtToken(token);
         User user = userRepository.getReferenceById(claims.getSubject());

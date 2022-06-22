@@ -117,6 +117,11 @@ public class OwnerServiceImpl implements OwnerService {
         tService.checkToken(token);
 
         Claims claims = jwtProvider.parseJwtToken(token);
+
+        if(!ownerRepository.existsById(claims.getSubject())) {
+            throw OwnerNotFoundException.EXCEPTION;
+        }
+
         Owner owner = ownerRepository.getReferenceById(claims.getSubject());
 
         Owner deleteOwner = Owner.builder()

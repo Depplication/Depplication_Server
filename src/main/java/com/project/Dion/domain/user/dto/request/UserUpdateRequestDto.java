@@ -1,6 +1,5 @@
 package com.project.Dion.domain.user.dto.request;
 
-import com.sun.istack.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
