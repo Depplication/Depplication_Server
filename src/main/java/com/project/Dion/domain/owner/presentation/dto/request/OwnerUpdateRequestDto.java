@@ -1,4 +1,4 @@
-package com.project.Dion.domain.owner.dto.request;
+package com.project.Dion.domain.owner.presentation.dto.request;
 
 import lombok.AccessLevel;
 import lombok.Builder;

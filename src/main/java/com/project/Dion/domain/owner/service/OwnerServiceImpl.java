@@ -1,12 +1,12 @@
 package com.project.Dion.domain.owner.service;
 
-import com.project.Dion.domain.owner.dto.request.OwnerDeleteRequestDto;
-import com.project.Dion.domain.owner.dto.request.OwnerJoinRequestDto;
-import com.project.Dion.domain.owner.dto.request.OwnerLoginRequestDto;
-import com.project.Dion.domain.owner.dto.request.OwnerUpdateRequestDto;
+import com.project.Dion.domain.owner.presentation.dto.request.OwnerJoinRequestDto;
+import com.project.Dion.domain.owner.presentation.dto.request.OwnerLoginRequestDto;
+import com.project.Dion.domain.owner.presentation.dto.request.OwnerUpdateRequestDto;
 import com.project.Dion.domain.owner.entity.Owner;
 import com.project.Dion.domain.owner.exception.OwnerAlreadyExistsException;
 import com.project.Dion.domain.owner.exception.OwnerNotFoundException;
+import com.project.Dion.domain.owner.presentation.dto.response.*;
 import com.project.Dion.domain.owner.repository.OwnerRepository;
 import com.project.Dion.global.exception.PasswordWrongException;
 import com.project.Dion.global.token.component.JwtProvider;
@@ -14,6 +14,7 @@ import com.project.Dion.global.token.service.TokenService;
 import com.project.Dion.global.utils.UpdateUtil;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,7 @@ public class OwnerServiceImpl implements OwnerService {
     private final JwtProvider jwtProvider;
 
     @Override
-    public Owner ownerLogin(OwnerLoginRequestDto ownerLoginRequestDto) {
+    public OwnerLoginResponse ownerLogin(OwnerLoginRequestDto ownerLoginRequestDto) {
 
         if(!ownerRepository.existsById(ownerLoginRequestDto.getId())) {
             throw OwnerNotFoundException.EXCEPTION;
@@ -40,12 +41,19 @@ public class OwnerServiceImpl implements OwnerService {
             throw PasswordWrongException.EXCEPTION;
         }
 
-        return owner;
+        return new OwnerLoginResponse(HttpStatus.OK, "로그인 성공",
+                owner.getId(),
+                owner.getPw(),
+                owner.getName(),
+                owner.getPhone(),
+                owner.getStore(),
+                owner.getAddress(),
+                tService.createToken(owner.getId()));
 
     }
 
     @Override
-    public Owner ownerJoin(OwnerJoinRequestDto ownerJoinRequestDto) {
+    public OwnerJoinResponse ownerJoin(OwnerJoinRequestDto ownerJoinRequestDto) {
 
         ownerRepository.findById(ownerJoinRequestDto.getId()).ifPresent(m -> {
             throw OwnerAlreadyExistsException.EXCEPTION;
@@ -60,11 +68,13 @@ public class OwnerServiceImpl implements OwnerService {
                 .phone(ownerJoinRequestDto.getPhone())
                 .build();
 
-        return ownerRepository.save(owner);
+        ownerRepository.save(owner);
+
+        return new OwnerJoinResponse(HttpStatus.OK, "회원가입 성공");
     }
 
     @Override
-    public Owner ownerInfo(String token) {
+    public OwnerInfoResponse ownerInfo(String token) {
 
         tService.checkToken(token);
 
@@ -74,11 +84,19 @@ public class OwnerServiceImpl implements OwnerService {
             throw OwnerNotFoundException.EXCEPTION;
         }
 
-        return ownerRepository.getReferenceById(claims.getSubject());
+        Owner owner = ownerRepository.getReferenceById(claims.getSubject());
+
+        return new OwnerInfoResponse(HttpStatus.OK, "업주정보 불러오기 성공",
+                owner.getId(),
+                owner.getPw(),
+                owner.getName(),
+                owner.getPhone(),
+                owner.getStore(),
+                owner.getAddress());
     }
 
     @Override
-    public Owner ownerUpdate(String token, OwnerUpdateRequestDto ownerUpdateRequestDto) {
+    public OwnerUpdateResponse ownerUpdate(String token, OwnerUpdateRequestDto ownerUpdateRequestDto) {
 
         tService.checkToken(token);
 
@@ -106,11 +124,16 @@ public class OwnerServiceImpl implements OwnerService {
             ownerRepository.save(m);
         });
 
-        return owner;
+        return new OwnerUpdateResponse(HttpStatus.OK, "업데이트 성공",
+                owner.getId(),
+                owner.getName(),
+                owner.getPhone(),
+                owner.getStore(),
+                owner.getAddress());
     }
 
     @Override
-    public void ownerDelete(String token, OwnerDeleteRequestDto ownerDeleteRequestDto) {
+    public OwnerDeleteResponse ownerDelete(String token, String pw) {
 
         tService.checkToken(token);
 
@@ -121,6 +144,9 @@ public class OwnerServiceImpl implements OwnerService {
         }
 
         Owner owner = ownerRepository.getReferenceById(claims.getSubject());
+        if(pw.equals(owner.getPw())) {
+            throw PasswordWrongException.EXCEPTION;
+        }
 
         Owner deleteOwner = Owner.builder()
                 .id(owner.getId())
@@ -132,5 +158,7 @@ public class OwnerServiceImpl implements OwnerService {
                 .build();
 
         ownerRepository.delete(deleteOwner);
+
+        return new OwnerDeleteResponse(HttpStatus.OK, "삭제 성공");
     }
 }
