@@ -1,7 +1,10 @@
 package com.project.Dion.domain.user.service;
 
-import com.project.Dion.domain.user.dto.request.*;
 import com.project.Dion.domain.user.entity.User;
+import com.project.Dion.domain.user.presentation.dto.request.UserJoinRequestDto;
+import com.project.Dion.domain.user.presentation.dto.request.UserLoginRequestDto;
+import com.project.Dion.domain.user.presentation.dto.request.UserUpdateRequestDto;
+import com.project.Dion.domain.user.presentation.dto.response.*;
 import com.project.Dion.global.exception.PasswordWrongException;
 import com.project.Dion.domain.user.exception.UserAlreadyExistsException;
 import com.project.Dion.domain.user.exception.UserNotFoundException;
@@ -11,6 +14,7 @@ import com.project.Dion.global.token.service.TokenService;
 import com.project.Dion.global.utils.UpdateUtil;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +30,7 @@ public class UserServiceImpl implements UserService{
     private final JwtProvider jwtProvider;
 
     @Override
-    public User userJoin(UserJoinRequestDto userJoinRequestDto) {
+    public UserJoinResponse userJoin(UserJoinRequestDto userJoinRequestDto) {
 
         userRepository.findById(userJoinRequestDto.getId()).ifPresent(m -> {
             throw UserAlreadyExistsException.EXCEPTION;
@@ -41,11 +45,11 @@ public class UserServiceImpl implements UserService{
                 .address(userJoinRequestDto.getAddress())
                 .build();
 
-        return userRepository.save(user);
+        return new UserJoinResponse(HttpStatus.OK, "회원가입 성공");
     }
 
     @Override
-    public User userLogin(UserLoginRequestDto userLoginRequestDto) {
+    public UserLoginResponse userLogin(UserLoginRequestDto userLoginRequestDto) {
 
         if(!userRepository.existsById(userLoginRequestDto.getId())) {
             throw UserNotFoundException.EXCEPTION;
@@ -56,12 +60,19 @@ public class UserServiceImpl implements UserService{
             throw PasswordWrongException.EXCEPTION;
         }
 
-        return user;
+        return new UserLoginResponse(HttpStatus.OK, "로그인 성공",
+                user.getId(),
+                user.getPw(),
+                user.getName(),
+                user.getPhone(),
+                user.getAccount(),
+                user.getAddress(),
+                tService.createToken(user.getId()));
 
     }
 
     @Override
-    public User userUpdate(String token, UserUpdateRequestDto userUpdateRequestDto) {
+    public UserUpdateResponse userUpdate(String token, UserUpdateRequestDto userUpdateRequestDto) {
 
         tService.checkToken(token);
 
@@ -89,11 +100,16 @@ public class UserServiceImpl implements UserService{
             userRepository.save(m);
         });
 
-        return user;
+        return new UserUpdateResponse(HttpStatus.OK, "업데이트 성공",
+                user.getId(),
+                user.getName(),
+                user.getPhone(),
+                user.getAccount(),
+                user.getAddress());
     }
 
     @Override
-    public User userInfo(String token) {
+    public UserInfoResponse userInfo(String token) {
 
         tService.checkToken(token);
 
@@ -103,16 +119,28 @@ public class UserServiceImpl implements UserService{
             throw UserNotFoundException.EXCEPTION;
         }
 
-        return userRepository.getReferenceById(claims.getSubject());
+        User user = userRepository.getReferenceById(claims.getSubject());
+
+        return new UserInfoResponse(HttpStatus.OK, "유저 정보 불러오기 성공",
+                user.getId(),
+                user.getPw(),
+                user.getName(),
+                user.getPhone(),
+                user.getAccount(),
+                user.getAddress());
     }
 
     @Override
-    public void userDelete(String token, UserDeleteRequestDto userDeleteRequestDto) {
+    public UserDeleteResponse userDelete(String token, String pw) {
 
         tService.checkToken(token);
 
         Claims claims = jwtProvider.parseJwtToken(token);
         User user = userRepository.getReferenceById(claims.getSubject());
+
+        if(pw.equals(user.getPw())) {
+            throw PasswordWrongException.EXCEPTION;
+        }
 
         User deleteUser = User.builder()
                 .id(user.getId())
@@ -124,6 +152,8 @@ public class UserServiceImpl implements UserService{
                 .build();
 
         userRepository.delete(deleteUser);
+
+        return new UserDeleteResponse(HttpStatus.OK, "삭제 성공");
 
     }
 }

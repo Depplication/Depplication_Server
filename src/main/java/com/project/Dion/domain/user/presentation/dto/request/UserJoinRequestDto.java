@@ -1,4 +1,4 @@
-package com.project.Dion.domain.user.dto.request;
+package com.project.Dion.domain.user.presentation.dto.request;
 
 import com.sun.istack.NotNull;
 import lombok.*;

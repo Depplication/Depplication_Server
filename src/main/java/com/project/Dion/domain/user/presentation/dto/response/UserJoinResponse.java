@@ -1,16 +1,13 @@
-package com.project.Dion.domain.user.dto.response;
+package com.project.Dion.domain.user.presentation.dto.response;
 
 import com.project.Dion.global.response.HttpResponse;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @Getter
-public class UserJoinResponse<T> extends HttpResponse {
+public class UserJoinResponse extends HttpResponse {
 
-    private final T data;
-
-    public UserJoinResponse(HttpStatus status, String msg, T data) {
+    public UserJoinResponse(HttpStatus status, String msg) {
         super(status, msg);
-        this.data = data;
     }
 }

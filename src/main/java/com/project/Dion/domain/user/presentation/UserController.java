@@ -1,12 +1,12 @@
-package com.project.Dion.domain.user.controller;
+package com.project.Dion.domain.user.presentation;
 
-import com.project.Dion.domain.user.dto.request.*;
-import com.project.Dion.domain.user.dto.response.*;
-import com.project.Dion.domain.user.entity.User;
+import com.project.Dion.domain.user.presentation.dto.request.UserJoinRequestDto;
+import com.project.Dion.domain.user.presentation.dto.request.UserLoginRequestDto;
+import com.project.Dion.domain.user.presentation.dto.request.UserUpdateRequestDto;
+import com.project.Dion.domain.user.presentation.dto.response.*;
 import com.project.Dion.domain.user.service.UserServiceImpl;
 import com.project.Dion.global.token.service.TokenService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,44 +17,41 @@ public class UserController {
     private final UserServiceImpl service;
     private final TokenService tService;
 
-    @RequestMapping(value = "/join", method = RequestMethod.POST)
-    public UserJoinResponse<User> userJoin(
+    @PostMapping("/join")
+    public UserJoinResponse userJoin(
             @RequestBody UserJoinRequestDto dto
     ) {
-
-        return new UserJoinResponse<User>(HttpStatus.OK, "회원가입 성공", service.userJoin(dto));
+        return service.userJoin(dto);
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public UserLoginResponse<User> userLogin(
+    @PostMapping("/login")
+    public UserLoginResponse userLogin(
             @RequestBody UserLoginRequestDto dto
     ) {
-        return new UserLoginResponse<User>(HttpStatus.OK, "로그인 성공", service.userLogin(dto), tService.createToken(dto.getId()));
+        return service.userLogin(dto);
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public UserUpdateResponse<User> userUpdate(
+    @PatchMapping("/update")
+    public UserUpdateResponse userUpdate(
             @RequestHeader(value = "Authorization") String token,
             @RequestBody UserUpdateRequestDto dto
     ) {
-        return new UserUpdateResponse<User>(HttpStatus.OK, "업데이트 성공", service.userUpdate(token, dto));
+        return service.userUpdate(token, dto);
     }
 
-    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    @DeleteMapping("/delete")
     public UserDeleteResponse userDelete(
             @RequestHeader(value = "Authorization") String token,
-            @RequestBody UserDeleteRequestDto dto
+            @PathVariable String pw
     ) {
-        service.userDelete(token, dto);
-
-        return new UserDeleteResponse(HttpStatus.OK, "삭제 성공");
+        return service.userDelete(token, pw);
     }
 
-    @RequestMapping(value = "/info", method = RequestMethod.GET)
-    public UserInfoResponse<User> userInfo(
+    @GetMapping("/info")
+    public UserInfoResponse userInfo(
             @RequestHeader(value = "Authorization") String token
     ) {
-        return new UserInfoResponse<User>(HttpStatus.OK, "유저 정보 불러오기 성공", service.userInfo(token));
+        return service.userInfo(token);
     }
 
 }

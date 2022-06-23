@@ -1,4 +1,4 @@
-package com.project.Dion.domain.user.dto.response;
+package com.project.Dion.domain.user.presentation.dto.response;
 
 import com.project.Dion.global.response.HttpResponse;
 import lombok.Getter;

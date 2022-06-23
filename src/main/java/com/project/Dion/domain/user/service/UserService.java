@@ -1,20 +1,22 @@
 package com.project.Dion.domain.user.service;
 
-import com.project.Dion.domain.user.dto.request.*;
-import com.project.Dion.domain.user.entity.User;
+import com.project.Dion.domain.user.presentation.dto.request.UserJoinRequestDto;
+import com.project.Dion.domain.user.presentation.dto.request.UserLoginRequestDto;
+import com.project.Dion.domain.user.presentation.dto.request.UserUpdateRequestDto;
+import com.project.Dion.domain.user.presentation.dto.response.*;
 
 
 public interface UserService {
 
-    User userJoin(UserJoinRequestDto userJoinRequestDto);
+    UserJoinResponse userJoin(UserJoinRequestDto userJoinRequestDto);
 
-    User userLogin(UserLoginRequestDto userLoginRequestDto);
+    UserLoginResponse userLogin(UserLoginRequestDto userLoginRequestDto);
 
-    User userUpdate(String token, UserUpdateRequestDto userUpdateRequestDto);
+    UserUpdateResponse userUpdate(String token, UserUpdateRequestDto userUpdateRequestDto);
 
-    User userInfo(String token);
+    UserInfoResponse userInfo(String token);
 
-    void userDelete(String token, UserDeleteRequestDto userDeleteRequestDto);
+    UserDeleteResponse userDelete(String token, String pw);
 
 
 }
