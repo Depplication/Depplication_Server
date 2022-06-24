@@ -1,32 +1,38 @@
 package com.project.Dion.domain.owner.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
 
-@Entity(name = "dion_owners")
+@Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@Table(name = "dion_owners")
 public class Owner {
 
     @Id
     private String id;
 
+    @NotNull
     @Column(nullable = false, name = "password", length = 100)
     private String pw;
 
     @Column(name = "ownerName", length = 10)
     private String name;
 
+    @NotNull
     @Column(nullable = false, name = "phoneNumber", length = 11)
     private String phone;
 
+    @NotNull
     @Column(nullable = false, name = "storeName", length = 100)
     private String store;
 
+    @NotNull
     @Column(nullable = false, name = "address")
     private String address;
 
