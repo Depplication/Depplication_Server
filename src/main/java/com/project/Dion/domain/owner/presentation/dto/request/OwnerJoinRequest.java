@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class OwnerJoinRequestDto {
+public class OwnerJoinRequest {
 
     @NotNull
     private String id;
@@ -29,7 +29,7 @@ public class OwnerJoinRequestDto {
     private String name;
 
     @Builder
-    public OwnerJoinRequestDto(String id, String pw, String storeName, String phone, String address, String name) {
+    public OwnerJoinRequest(String id, String pw, String storeName, String phone, String address, String name) {
         this.id = id;
         this.pw = pw;
         this.storeName = storeName;
