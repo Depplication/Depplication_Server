@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserLoginRequestDto {
+public class UserLoginRequest {
 
     @NotNull
     private String id;
@@ -17,7 +17,7 @@ public class UserLoginRequestDto {
     private String pw;
 
     @Builder
-    public UserLoginRequestDto(String id, String pw) {
+    public UserLoginRequest(String id, String pw) {
         this.id = id;
         this.pw = pw;
     }

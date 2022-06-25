@@ -5,7 +5,7 @@ import lombok.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserJoinRequestDto {
+public class UserJoinRequest {
 
     @NotNull
     private String id;
@@ -25,7 +25,7 @@ public class UserJoinRequestDto {
     private String name;
 
     @Builder
-    public UserJoinRequestDto(String id, String pw, String phone, String address, String account, String name) {
+    public UserJoinRequest(String id, String pw, String phone, String address, String account, String name) {
         this.id = id;
         this.pw = pw;
         this.phone = phone;

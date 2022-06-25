@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserUpdateRequestDto {
+public class UserUpdateRequest {
 
     private String name;
 
@@ -18,7 +18,7 @@ public class UserUpdateRequestDto {
     private String address;
 
     @Builder
-    public UserUpdateRequestDto(String name, String phone, String account, String address) {
+    public UserUpdateRequest(String name, String phone, String account, String address) {
         this.name = name;
         this.phone = phone;
         this.account = account;
