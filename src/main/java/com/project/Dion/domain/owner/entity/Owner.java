@@ -9,7 +9,6 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "dion_owners")
 public class Owner {
