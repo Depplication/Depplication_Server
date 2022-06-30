@@ -108,6 +108,7 @@ public class OwnerServiceImpl implements OwnerService {
          * 아이디 존재하는 지 확인
          * 존재하지 않으면 OwnerNotFoundException 예외 처리
          * */
+
         if(!ownerRepository.existsById(claims.getSubject())) {
             throw OwnerNotFoundException.EXCEPTION;
         }

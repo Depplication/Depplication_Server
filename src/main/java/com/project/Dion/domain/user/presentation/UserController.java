@@ -33,6 +33,7 @@ public class UserController {
     public UserUpdateResponse userUpdate(
             @RequestHeader(value = "Authorization") String token,
             @RequestBody UserUpdateRequest dto
+
     ) {
         return service.userUpdate(token, dto);
     }

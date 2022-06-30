@@ -26,7 +26,7 @@ public class OwnerController {
     @PostMapping("/join")
     public OwnerJoinResponse ownerJoin(
             @RequestBody OwnerJoinRequest dto
-    ) {
+    ){
         return service.ownerJoin(dto);
     }
 

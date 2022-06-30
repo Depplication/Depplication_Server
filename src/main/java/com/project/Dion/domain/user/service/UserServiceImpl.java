@@ -31,7 +31,6 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserJoinResponse userJoin(UserJoinRequest userJoinRequestDto) {
-
         userRepository.findById(userJoinRequestDto.getId()).ifPresent(m -> {
             throw UserAlreadyExistsException.EXCEPTION;
         });
@@ -73,7 +72,6 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserUpdateResponse userUpdate(String token, UserUpdateRequest userUpdateRequestDto) {
-
         tService.checkToken(token);
 
         Claims claims = jwtProvider.parseJwtToken(token);
